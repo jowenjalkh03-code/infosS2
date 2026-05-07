@@ -1,0 +1,59 @@
+#ifndef AFFICHAGE_H
+#define AFFICHAGE_H
+
+#include <allegro.h>
+
+#include "logique_jeu.h"
+
+typedef struct {
+    BITMAP *fond;
+    BITMAP *fondsNiveaux[NOMBRE_FONDS_NIVEAUX];
+    BITMAP *player;
+    BITMAP *tir;
+    BITMAP *feu;
+    BITMAP *chapeau;
+    BITMAP *explosion;
+    BITMAP *sprites[BULLE_TAILLES_TOTAL];
+    BITMAP *spritesVifDor[BULLE_TAILLES_TOTAL];
+    BITMAP *spritesVolDeMort[BULLE_TAILLES_TOTAL];
+    BITMAP *buffer;
+} RessourcesJeu;
+
+int initialiser_affichage(const char *fond_path,
+                          int profondeur_couleur);
+int ressource_existe(const char *chemin);
+BITMAP *charger_bitmap_ou_erreur(const char *chemin);
+int charger_ressources_jeu(RessourcesJeu *ressources,
+                           const char *fond_path,
+                           const char *player_path,
+                           const char *mangemort_path,
+                           const char *vifdor_path,
+                           const char *tir_path,
+                           const char *feu_path,
+                           const char *chapeau_path,
+                           const char *explosion_path);
+void dessiner_menu_depart(const RessourcesJeu *ressources, int selection, int repriseDisponible);
+void dessiner_menu_parametres(const RessourcesJeu *ressources,
+                              int selection,
+                              int modeDemonstrationActif);
+void dessiner_selection_niveau(const RessourcesJeu *ressources,
+                               int selection,
+                               int niveauMaximumDebloque,
+                               int niveauMaximumTotal);
+void dessiner_selection_sauvegarde(const RessourcesJeu *ressources,
+                                   int selection,
+                                   const char pseudos[NOMBRE_SLOTS_SAUVEGARDE][TAILLE_PSEUDO_MAX],
+                                   const int sauvegardesDisponibles[NOMBRE_SLOTS_SAUVEGARDE]);
+void dessiner_ecran_information(const RessourcesJeu *ressources,
+                                const char *titre,
+                                const char *ligne1,
+                                const char *ligne2,
+                                const char *ligne3);
+void dessiner_saisie_pseudo(const RessourcesJeu *ressources, const char *pseudoJoueur);
+void dessiner_decompte_depart(const RessourcesJeu *ressources, const EtatJeu *etatJeu, int valeur);
+void dessiner_jeu(const RessourcesJeu *ressources, const EtatJeu *etatJeu);
+void liberer_bitmap(BITMAP **bitmap);
+void liberer_ressources_jeu(RessourcesJeu *ressources);
+void fermer_affichage(void);
+
+#endif
